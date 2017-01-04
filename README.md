@@ -12,12 +12,15 @@ Example Usage:
 <custom-element-demo>
   <template>
     <link rel="import" href="paper-locale-input.html">
+    <link rel="import" href="../paper-input/paper-input.html">
     <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
 ```
 -->
 ```html
+
 <paper-locale-input value="{{value}}"	label="amount"  currency="EUR" locale="fr_FR"></paper-locale-input>
+
 ```
 
