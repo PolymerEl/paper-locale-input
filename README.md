@@ -23,7 +23,7 @@ Example Usage:
 -->
 ```html
 
-<paper-locale-input value="123000000"	label="amount"  currency="EUR" locale="fr_FR"></paper-locale-input>
+<paper-locale-input value="123000000"	label="amount"  currency="EUR" locale="fr-FR"></paper-locale-input>
 
 ```
 
