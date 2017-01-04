@@ -7,12 +7,6 @@
 
 Example Usage:
 
-```html
-	
-
-
-```
-
 <!--
 ```
 <custom-element-demo>
