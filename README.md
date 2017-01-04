@@ -12,7 +12,6 @@ Example Usage:
 <custom-element-demo>
   <template>
     <link rel="import" href="paper-locale-input.html">
-    
     <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
