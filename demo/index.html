@@ -23,10 +23,8 @@
       <template>
         <template is="dom-bind" id="app">
           <paper-locale-input id="pli" label="paper-locale-input" locales="{{locales}}" currency="{{currency}}" value="{{value}}" minimum-fraction-digits="[[minimumFractionDigits]]" maximum-fraction-digits="[[maximumFractionDigits]]" minimum-integer-digits="[[minimumIntegerDigits]]" minimum-significant-digits="[[minimumSignificantDigits]]" maximum-significant-digits="[[maximumSignificantDigits]]" ></paper-locale-input>
-          <div>
-            value: [[value]]
-          </div>
-          <paper-input always-float-label type="number" label="the value" value="{{value}}"></paper-input>
+         
+          <paper-input always-float-label type="number" label="the same value, without formating" value="{{value}}"></paper-input>
           <paper-input always-float-label type="number" label="minimumFractionDigits" value="{{minimumFractionDigits}}"></paper-input>
           <paper-input always-float-label type="number" label="maximumFractionDigits" value="{{maximumFractionDigits}}"></paper-input>
           <paper-input always-float-label type="number" label="minimumIntegerDigits" value="{{minimumIntegerDigits}}"></paper-input>
@@ -53,7 +51,6 @@ window.addEventListener('WebComponentsReady', function() {
   app.changeCurrency = function(e) {
     app.set('currency', e.target.dataset.currency);
   }
-
 
   app.value= 2012300044;  
   app.locales = "us-US";
