@@ -218,6 +218,9 @@
       ready: function() {
         var num = 0;
         this.supportLocale = !!num.toLocaleString;
+        if(this.value || this.value === 0) {
+          this._valueChange(this.value, this.value);
+        }
       },
 
      /**
