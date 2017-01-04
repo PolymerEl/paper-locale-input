@@ -1,0 +1,328 @@
+<!--
+@license
+Copyright (c) 2016 The Ingresso Rápido Web Components Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://ingressorapidowebcomponents.github.io/LICENSE.txt
+The complete set of authors may be found at http://ingressorapidowebcomponents.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://ingressorapidowebcomponents.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-input/paper-input-behavior.html">
+<link rel="import" href="../paper-input/paper-input-error.html">
+<!--
+`<paper-locale-input>` is a customizable input validator and mask for currency amounts.
+It uses the paper-input element for create the element form.
+
+Default options example:
+
+```html
+    <money-input value="{{value}}"></money-input>
+```
+
+### Styling
+
+Custom property | Description | Default
+----------------|-------------|----------
+`--money-input-width` | Field width | 100%
+
+@demo demo/index.html
+-->
+<dom-module id="paper-locale-input">
+  <template>
+    <style is="custom-style">
+    :host {
+      display: block;
+    }
+
+    :host([support-locale]) #input {
+      /*visibility: hidden;*/
+      display: none;
+      }
+    
+    .prefix {
+      padding-right: 10px;
+    }
+    
+    paper-input {
+      width: var(--paper-locale-input-width);
+    }
+    </style>
+    <!-- <template is="dom-if" if="[[!_supportLocale]]"> -->
+      <!-- TODO: fallback if toLocaleString is not supported  -->
+      <paper-input 
+        id="input"
+        label="[[label]]"
+        value="{{value}}" 
+        type="number"
+        no-label-float="[[noLabelFloat]]" 
+        invalid="{{invalid}}"
+        required="[[required]]" 
+        name="[[name]]" 
+        disabled="[[disabled]]" 
+        readonly="[[readonly]]" 
+        always-float-label="[[alwaysFloatLabel]]"
+        min="[[min]]"
+        max="[[max]]"
+        step="[[step]]"
+        auto-validate
+        error-message="[[errorMessage]]"
+        placeholder="[[placeholder]]"
+        >  
+        <div prefix class="prefix">[[currency]]</div>
+      </paper-input>
+    <!-- </template> -->
+    <template is="dom-if" if="[[supportLocale]]">
+      <paper-input 
+
+        label="[[label]]"
+        no-label-float="[[noLabelFloat]]" 
+        value="{{_inputValue}}" 
+        name="[[name]]" 
+        disabled="[[disabled]]" 
+        readonly="[[readonly]]" 
+        always-float-label="[[alwaysFloatLabel]]"
+        error-message="[[errorMessage]]"
+        invalid="[[invalid]]"
+        placeholder="[[placeholder]]"
+        >
+
+        </paper-input>
+
+      </template>
+    </template>
+    <script>
+    (function() {
+      "use strict";
+
+      var minimumFractionDigits = 0;
+      var maximumFractionDigits = 2;
+      var minimumIntegerDigits = 1;
+      // var minimumSignificantDigits = 1;
+      // var maximumSignificantDigits = minimumSignificantDigits;
+
+    Polymer({
+
+      is: 'paper-locale-input',
+
+      behaviors: [
+        // Polymer.PaperInputBehavior
+      ],
+
+      properties: {
+
+        /**
+         * `_supportLocale` flag set to true when toLocaleString is supported
+         */
+        supportLocale: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: true // to do : check on ready
+        },
+
+        /**
+         * `_inputValue` value bound to paper-input
+         */
+        _inputValue: {
+          type: String,
+          observer: '_onInputValueChanged'
+        },
+
+        /**
+         * The error message to display when the input is invalid. If you're using
+         * PaperInputBehavior to implement your own paper-input-like element,
+         * bind this to the `<paper-input-error>`'s content, if using.
+         */
+        errorMessage: {
+          type: String,
+          value: 'invalid field'
+        },
+
+        /**
+         * `value` value to bound to
+         */
+        value: {
+          type: Number,
+          notify: true,
+          observer: '_valueChange'
+        },
+
+        /**
+         * `locales`  A string with a BCP 47 language tag, or an array of such strings(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation)
+         */
+        locales: {
+          type: String,
+          value: 'us-US',
+          observer: 'reFormat'
+        },
+
+        /**
+         * `currency` the currency to Use. The currency to use in currency formatting. Possible values are the ISO 4217 currency codes, such as "USD" for the US dollar, "EUR" for the euro, or "CNY" for the Chinese RMB — see the Current currency & funds code list. There is no default value; if the style is "currency", the currency property must be provided.
+         */
+        currency: {
+          type: String,
+          value: 'USD',
+          observer: 'reFormat'
+        },
+
+        /**
+         * `style` The formatting style to use. Possible values are "decimal" for plain number formatting, "currency" for currency formatting, and "percent" for percent formatting.
+         */
+        formatingStyle: {
+          type: String,
+          value: 'currency',
+          observer: 'reFormat'
+        },
+
+
+        /**
+         * `currencyDisplay` How to display the currency in currency formatting. Possible values are "symbol" to use a localized currency symbol such as €, "code" to use the ISO currency code, "name" to use a localized currency name such as "dollar"; the default is "symbol".
+         */
+        currencyDisplay: {
+          type: String,
+          value: 'symbol',
+          observer: 'reFormat'
+        },
+
+        /**
+         * `preventUseGrouping` Whether to use grouping separators, such as thousands separators or thousand/lakh/crore separators. .
+         */
+        preventUseGrouping: {
+          type: Boolean,
+          value: false,
+          observer: 'reFormat'
+        },
+
+        /**
+         * `minimumFractionDigits` The minimum number of fraction digits to use. Possible values are from 0 to 20; the default for plain number and percent formatting is 0
+         */
+        minimumFractionDigits: {
+          type: Number,
+          value: minimumFractionDigits,
+          observer: 'reFormat'
+        },
+
+        /**
+         * `maximumFractionDigits` The maximum number of fraction digits to use. Possible values are from 0 to 20; the default for plain number formatting is the larger of minimumFractionDigits and 3; the default for currency formatting is the larger of minimumFractionDigits and the number of minor unit digits provided by the ISO 4217 currency code list (2 if the list doesn't provide that information); the default for percent formatting is the larger of minimumFractionDigits and 0.
+         */
+         maximumFractionDigits: {
+          type: Number,
+          value: maximumFractionDigits,
+          observer: 'reFormat'
+         },
+
+        /**
+         * `minimumIntegerDigits` The minimum number of integer digits to use. Possible values are from 1 to 21; the default is 1.
+         */
+        minimumIntegerDigits: {
+          type: Number,
+          value: minimumIntegerDigits,
+          observer: 'reFormat'
+         },
+
+        /**
+          * `minimumSignificantDigits`: The minimum number of significant digits to use. Possible values are from 1 to 21; the default is 1.
+          */ 
+        // minimumSignificantDigits: {
+        //   type: Number,
+        //   value: minimumSignificantDigits,
+        //   observer: 'reFormat'
+        // }, 
+       
+       /**
+        * `maximumSignificantDigits` The maximum number of significant digits to use. Possible values are from 1 to 21; the default is minimumSignificantDigits.
+        */
+        // maximumSignificantDigits: {
+        //   type: Number,
+        //   value: maximumSignificantDigits,
+        //   observer: 'reFormat'
+        // }
+      },
+
+      observers: [],
+
+      ready: function() {
+        var num = 0;
+        if(!num.toLocaleString) {
+          this.supportLocale = false;
+        }
+      },
+
+      reFormat: function(){
+        if(this.supportLocale) {
+          this.debounce('paper-locale-input-reformat', function(){
+            this._valueChange(this.value, this.value);
+          } ,10);
+        }
+      },
+      _onInputValueChanged: function(value) {
+
+        if (this.__valueIsChanging || !this.supportLocale) {
+          return;
+        }
+        var oldValue = this.value;
+        this.value = value === '' || !this.__isLocal ? value : value.replace(/[^\d]*/g, '') * Math.pow(10, -this.minimumFractionDigits);
+
+        // we need to call _valueChange again for the case where we would have invalid input (e.g. characters)
+        if (oldValue === this.value) {
+          this._valueChange(this.value, oldValue);
+        }
+
+      },
+
+      _valueChange: function(value, old) {
+        
+        if(!this.supportLocale) {
+          return;
+        }
+
+        this.__valueIsChanging = true;
+        
+        if(value === '') {
+          return this._inputValue = '';
+        }
+        
+        var num = this.value * 1;
+
+        if (isNaN(num)) {
+          this.__valueIsChanging = false;
+          return this.value = old;
+        }
+
+        this._inputValue = this.getFormatedValue(num);
+        this.__isLocal = true;
+        this.__valueIsChanging = false;
+
+      },
+
+      getFormatedValue: function(num) {
+        console.info('num: ', num);
+        var format ;
+        
+        try {
+           format = num.toLocaleString(this.locales, {
+            style: this.formatingStyle,
+            currency: this.currency,
+            currencyDisplay: this.currencyDisplay,
+            preventUseGrouping: this.preventUseGrouping,
+            minimumFractionDigits:  this.minimumFractionDigits || minimumFractionDigits,
+            maximumFractionDigits:  this.maximumFractionDigits || maximumFractionDigits,
+            minimumIntegerDigits:  this.minimumIntegerDigits || minimumIntegerDigits
+            // minimumSignificantDigits and minimumSignificantDigitsthis does not work
+            // minimumSignificantDigits:  this.minimumSignificantDigits || minimumSignificantDigits,
+            // maximumSignificantDigits:  this.maximumSignificantDigit || maximumSignificantDigits
+          });
+        }
+        catch(err) {
+            this.errorMessage = err;
+            this.invalid = true;
+            return num;
+        }
+        return format;
+      },
+
+    });
+  })();
+  </script>
+</dom-module>

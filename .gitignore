@@ -1,0 +1,7 @@
+**.DS_Store
+*.iml
+
+.git/
+.idea/
+.directory
+bower_components/
