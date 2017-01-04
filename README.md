@@ -3,7 +3,10 @@
 
 # \<paper-locale-input\>
 
-`<paper-locale-input>` is a customizable paper input to deal with locale data (e.g. currencies)
+`<paper-locale-input>` is a customizable paper input to deal with locale data (e.g. currencies). 
+
+It relies on [`toLocaleString`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for returning a language seneitive representation of the inputed number. 
+For older browser not supporting `toLocaleString` a fallback using a usual `paper-input` with a currency prefix is used.
 
 Example Usage:
 
@@ -20,7 +23,7 @@ Example Usage:
 -->
 ```html
 
-<paper-locale-input value="{{value}}"	label="amount"  currency="EUR" locale="fr_FR"></paper-locale-input>
+<paper-locale-input value="123000000"	label="amount"  currency="EUR" locale="fr_FR"></paper-locale-input>
 
 ```
 

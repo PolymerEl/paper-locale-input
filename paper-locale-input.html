@@ -122,9 +122,9 @@
         },
 
         /**
-         * `locales`  A string with a BCP 47 language tag, or an array of such strings(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation)
+         * `locale`  A string with a BCP 47 language tag, or an array of such strings(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation)
          */
-        locales: {
+        locale: {
           type: String,
           value: 'us-US',
           observer: 'reFormat'
@@ -281,7 +281,7 @@
         var format ;
         
         try {
-           format = num.toLocaleString(this.locales, {
+           format = num.toLocaleString(this.locale, {
             style: this.formatingStyle,
             currency: this.currency,
             currencyDisplay: this.currencyDisplay,

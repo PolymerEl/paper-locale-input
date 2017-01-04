@@ -22,7 +22,7 @@
     <demo-snippet>
       <template>
         <template is="dom-bind" id="app">
-          <paper-locale-input id="pli" label="paper-locale-input" locales="{{locales}}" currency="{{currency}}" value="{{value}}" minimum-fraction-digits="[[minimumFractionDigits]]" maximum-fraction-digits="[[maximumFractionDigits]]" minimum-integer-digits="[[minimumIntegerDigits]]" minimum-significant-digits="[[minimumSignificantDigits]]" maximum-significant-digits="[[maximumSignificantDigits]]" ></paper-locale-input>
+          <paper-locale-input id="pli" label="paper-locale-input" locale="{{locale}}" currency="{{currency}}" value="{{value}}" minimum-fraction-digits="[[minimumFractionDigits]]" maximum-fraction-digits="[[maximumFractionDigits]]" minimum-integer-digits="[[minimumIntegerDigits]]" minimum-significant-digits="[[minimumSignificantDigits]]" maximum-significant-digits="[[maximumSignificantDigits]]" ></paper-locale-input>
          
           <paper-input always-float-label type="number" label="the same value, without formating" value="{{value}}"></paper-input>
           <paper-input always-float-label type="number" label="minimumFractionDigits" value="{{minimumFractionDigits}}"></paper-input>
@@ -53,7 +53,7 @@ window.addEventListener('WebComponentsReady', function() {
   }
 
   app.value= 2012300044;  
-  app.locales = "us-US";
+  app.locale = "us-US";
   app.currency = "USD";
   app.minimumFractionDigits = 0;
   app.maximumFractionDigits = 2;
