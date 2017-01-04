@@ -5,3 +5,10 @@
 
 `<paper-locale-input>` is a customizable paper input to deal with locale data (e.g. currencies)
 
+Example Usage:
+
+```html
+	<paper-locale-input value="{{value}}"	label="amount"  currency="EUR" locale="fr_FR"></paper-locale-input>
+
+
+```
