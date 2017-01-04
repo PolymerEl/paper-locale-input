@@ -107,7 +107,7 @@ Custom property | Description | Default
       is: 'paper-locale-input',
 
       behaviors: [
-        // Polymer.PaperInputBehavior
+        Polymer.PaperInputBehavior
       ],
 
       properties: {
@@ -249,6 +249,14 @@ Custom property | Description | Default
         }
       },
 
+     /**
+      * Forward focus to inputElement. Overriden from IronControlState.
+      * @override - otherwise  stackoverflow on blur...
+      */
+      _focusBlurHandler: function() {
+
+      },
+
       reFormat: function(){
         if(this.supportLocale) {
           this.debounce('paper-locale-input-reformat', function(){
@@ -256,6 +264,7 @@ Custom property | Description | Default
           } ,10);
         }
       },
+
       _onInputValueChanged: function(value) {
 
         if (this.__valueIsChanging || !this.supportLocale) {
