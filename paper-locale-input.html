@@ -17,8 +17,12 @@
 
     :host[support-locale] #input {
       display: none;
-      }
+     }
     
+    :host:not([support-locale]) #localeInput {
+      display: none;
+    }
+
     .prefix {
       padding-right: 10px;
     }
@@ -48,9 +52,8 @@
         >  
         <div prefix class="prefix">[[currency]]</div>
       </paper-input>
-      <template is="dom-if" if="[[supportLocale]]">
       <paper-input 
-
+        id="localeInput"
         label="[[label]]"
         no-label-float="[[noLabelFloat]]" 
         value="{{_inputValue}}" 
@@ -62,10 +65,7 @@
         invalid="[[invalid]]"
         placeholder="[[placeholder]]"
         >
-
         </paper-input>
-
-      </template>
     </template>
     <script>
     (function() {
