@@ -241,11 +241,12 @@
 
       _onInputValueChanged: function(value) {
 
-        if (this.__valueIsChanging || !this.supportLocale) {
+        if (this._valueIsChanging || !this.supportLocale) {
           return;
         }
         var oldValue = this.value;
-        this.value = value === '' || !this.__isLocal ? value : value.replace(/[^\d]*/g, '') * Math.pow(10, -this.minimumFractionDigits);
+        value = value.replace(/[^\d]*/g, '');
+        this.value = value.length ? value * Math.pow(10, -this.minimumFractionDigits) : '' ;
 
         // we need to call _valueChange again for the case where we would have invalid input (e.g. characters)
         if (oldValue === this.value) {
@@ -259,8 +260,6 @@
         if(!this.supportLocale) {
           return;
         }
-
-        this.__valueIsChanging = true;
         
         if(value === '') {
           return this._inputValue = '';
@@ -269,13 +268,12 @@
         var num = this.value * 1;
 
         if (isNaN(num)) {
-          this.__valueIsChanging = false;
           return this.value = old;
         }
 
+        this._valueIsChanging = true;
         this._inputValue = this.getFormatedValue(num);
-        this.__isLocal = true;
-        this.__valueIsChanging = false;
+        this._valueIsChanging = false;
 
       },
 
