@@ -1,0 +1,66 @@
+<link rel="import" href="paper-locale-behavior.html">
+<!--
+Format a value according to  [`toLocaleString`](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Number/toLocaleString) for returning a language sensitive representation. 
+
+Example:
+	
+	<paper-locale locale="bn-BD" currency="BSD" value="12345678"></paper-locale>
+
+@demo demo/index.html
+-->
+<dom-module id="paper-locale">
+  <template>
+    <style>
+    :host {
+      display: inline-block;
+    }
+    </style>
+    <span>[[_formatedValue]]</span>
+  </template>
+  <script>
+  Polymer({
+    is: 'paper-locale',
+
+    behaviors: [
+      Polymer.PaperLocaleInputBehavior
+    ],
+
+    properties: {
+
+      /**
+       * `value` value to format
+       */
+      value: {
+        type: String,
+        observer: '_valueChange'
+      },
+
+      _formatedValue: {
+        type: String
+      }
+    },
+    /**
+     * `valueChange`
+     * @override
+     */
+    _valueChange: function(value, old) {
+
+      if (!this.supportLocale) {
+        return;
+      }
+
+      if (value === '') {
+        return this._formatedValue = '';
+      }
+
+      var num = this.value * 1;
+
+      if (isNaN(num)) {
+        return this.value = old;
+      }
+
+      this._formatedValue = this.getFormatedValue(num);
+    }
+  });
+  </script>
+</dom-module>
