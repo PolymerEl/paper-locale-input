@@ -14,8 +14,10 @@
     "web-components",
     "polymer",
     "material-design",
+    "paper-input",
     "input",
     "money",
+    "form",
     "currency",
     "Intl",
     "locales"
