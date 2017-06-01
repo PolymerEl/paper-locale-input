@@ -2,167 +2,159 @@
 <script>
 /**
  * Paper Locale Behaviors
- * @polymerBehavior Polymer.PaperLocaleInputBehavior
  */
-(function() {
-  "use strict";
+window.Polymer = window.Polymer || {};
+Polymer.behaviors = Polymer.behaviors || {};
 
-  var minimumFractionDigits = 0;
-  var maximumFractionDigits = 2;
-  var minimumIntegerDigits = 1;
-
-  Polymer.PaperLocaleInputBehavior = {
-    properties: {
-      /**
-       * `_supportLocale` flag set to true when toLocaleString is supported
-       */
-      supportLocale: {
-        type: Boolean,
-        reflectToAttribute: true
-      },
-
-      /**
-       * `locale`  A string with a BCP 47 language tag, or an array of such strings(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation)
-       */
-      locale: {
-        type: String,
-        value: 'us-US',
-        observer: 'reFormat'
-      },
-
-      /**
-       * `currency` the currency to Use. The currency to use in currency formatting. Possible values are the ISO 4217 currency codes, such as "USD" for the US dollar, "EUR" for the euro, or "CNY" for the Chinese RMB — see the Current currency & funds code list. There is no default value; if the style is "currency", the currency property must be provided.
-       */
-      currency: {
-        type: String,
-        value: 'USD',
-        observer: 'reFormat'
-      },
-
-      /**
-       * `style` The formatting style to use. Possible values are "decimal" for plain number formatting, "currency" for currency formatting, and "percent" for percent formatting.
-       */
-      formatingStyle: {
-        type: String,
-        value: 'currency',
-        observer: 'reFormat'
-      },
-
-
-      /**
-       * `currencyDisplay` How to display the currency in currency formatting. Possible values are "symbol" to use a localized currency symbol such as €, "code" to use the ISO currency code, "name" to use a localized currency name such as "dollar"; the default is "symbol".
-       */
-      currencyDisplay: {
-        type: String,
-        value: 'symbol',
-        observer: 'reFormat'
-      },
-
-      /**
-       * `preventUseGrouping` Whether to use grouping separators, such as thousands separators or thousand/lakh/crore separators. .
-       */
-      preventUseGrouping: {
-        type: Boolean,
-        value: false,
-        observer: 'reFormat'
-      },
-
-      /**
-       * `minimumFractionDigits` The minimum number of fraction digits to use. Possible values are from 0 to 20; the default for plain number and percent formatting is 0
-       */
-      minimumFractionDigits: {
-        type: Number,
-        value: minimumFractionDigits,
-        observer: 'reFormat'
-      },
-
-      /**
-       * `maximumFractionDigits` The maximum number of fraction digits to use. Possible values are from 0 to 20; the default for plain number formatting is the larger of minimumFractionDigits and 3; the default for currency formatting is the larger of minimumFractionDigits and the number of minor unit digits provided by the ISO 4217 currency code list (2 if the list doesn't provide that information); the default for percent formatting is the larger of minimumFractionDigits and 0.
-       */
-      maximumFractionDigits: {
-        type: Number,
-        value: maximumFractionDigits,
-        observer: 'reFormat'
-      },
-
-      /**
-       * `minimumIntegerDigits` The minimum number of integer digits to use. Possible values are from 1 to 21; the default is 1.
-       */
-      minimumIntegerDigits: {
-        type: Number,
-        value: minimumIntegerDigits,
-        observer: 'reFormat'
-      },
-
-      /**
-       * `minimumSignificantDigits`: The minimum number of significant digits to use. Possible values are from 1 to 21; the default is 1.
-       */
-      // minimumSignificantDigits: {
-      //   type: Number,
-      //   value: minimumSignificantDigits,
-      //   observer: 'reFormat'
-      // }, 
-
-      /**
-       * `maximumSignificantDigits` The maximum number of significant digits to use. Possible values are from 1 to 21; the default is minimumSignificantDigits.
-       */
-      // maximumSignificantDigits: {
-      //   type: Number,
-      //   value: maximumSignificantDigits,
-      //   observer: 'reFormat'
-      // }
-
-    },
-
-    ready: function() {
-      this.supportLocale = !!Number.prototype.toLocaleString;
-      if (this.value || this.value === 0) {
-        this._valueChange(this.value, this.value);
-      }
-    },
-
-    reFormat: function() {
-      if (this.supportLocale) {
-        this.debounce('paper-locale-input-reformat', function() {
-          this._valueChange(this.value, this.value);
-        }, 10);
-      }
-    },
+/* @polymerBehavior Polymer.behaviors.PaperLocaleInputBehavior */
+Polymer.behaviors.PaperLocaleInputBehavior = {
+  properties: {
     /**
-     * `valueChange` to override
+     * `_supportLocale` flag set to true when toLocaleString is supported
      */
-    _valueChange: function(value) {
-      return value
+    supportLocale: {
+      type: Boolean,
+      reflectToAttribute: true
     },
 
-    getFormatedValue: function(num) {
+    /**
+     * `locale`  A string with a BCP 47 language tag, or an array of such strings(https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl#Locale_identification_and_negotiation)
+     */
+    locale: {
+      type: String,
+      value: 'us-US',
+      observer: 'reFormat'
+    },
 
-      var format;
+    /**
+     * `currency` the currency to Use. The currency to use in currency formatting. Possible values are the ISO 4217 currency codes, such as "USD" for the US dollar, "EUR" for the euro, or "CNY" for the Chinese RMB — see the Current currency & funds code list. There is no default value; if the style is "currency", the currency property must be provided.
+     */
+    currency: {
+      type: String,
+      value: 'USD',
+      observer: 'reFormat'
+    },
 
-      try {
-        format = num.toLocaleString(this.locale, {
-          style: this.formatingStyle,
-          currency: this.currency,
-          currencyDisplay: this.currencyDisplay,
-          preventUseGrouping: this.preventUseGrouping,
-          minimumFractionDigits: this.minimumFractionDigits || minimumFractionDigits,
-          maximumFractionDigits: this.maximumFractionDigits || maximumFractionDigits,
-          minimumIntegerDigits: this.minimumIntegerDigits || minimumIntegerDigits
-            // minimumSignificantDigits and minimumSignificantDigitsthis does not work
-            // minimumSignificantDigits:  this.minimumSignificantDigits || minimumSignificantDigits,
-            // maximumSignificantDigits:  this.maximumSignificantDigit || maximumSignificantDigits
-        });
-      } catch (err) {
-        this.errorMessage = err;
-        this.invalid = true;
-        return num;
-      }
-      return format;
+    /**
+     * `style` The formatting style to use. Possible values are "decimal" for plain number formatting, "currency" for currency formatting, and "percent" for percent formatting.
+     */
+    formatingStyle: {
+      type: String,
+      value: 'currency',
+      observer: 'reFormat'
     },
 
 
-  };
+    /**
+     * `currencyDisplay` How to display the currency in currency formatting. Possible values are "symbol" to use a localized currency symbol such as €, "code" to use the ISO currency code, "name" to use a localized currency name such as "dollar"; the default is "symbol".
+     */
+    currencyDisplay: {
+      type: String,
+      value: 'symbol',
+      observer: 'reFormat'
+    },
 
+    /**
+     * `preventUseGrouping` Whether to use grouping separators, such as thousands separators or thousand/lakh/crore separators. .
+     */
+    preventUseGrouping: {
+      type: Boolean,
+      value: false,
+      observer: 'reFormat'
+    },
 
-})();
+    /**
+     * `minimumFractionDigits` The minimum number of fraction digits to use. Possible values are from 0 to 20; the default for plain number and percent formatting is 0
+     */
+    minimumFractionDigits: {
+      type: Number,
+      value: 0,
+      observer: 'reFormat'
+    },
+
+    /**
+     * `maximumFractionDigits` The maximum number of fraction digits to use. Possible values are from 0 to 20; the default for plain number formatting is the larger of minimumFractionDigits and 3; the default for currency formatting is the larger of minimumFractionDigits and the number of minor unit digits provided by the ISO 4217 currency code list (2 if the list doesn't provide that information); the default for percent formatting is the larger of minimumFractionDigits and 0.
+     */
+    maximumFractionDigits: {
+      type: Number,
+      value: 2,
+      observer: 'reFormat'
+    },
+
+    /**
+     * `minimumIntegerDigits` The minimum number of integer digits to use. Possible values are from 1 to 21; the default is 1.
+     */
+    minimumIntegerDigits: {
+      type: Number,
+      value: 1,
+      observer: 'reFormat'
+    },
+
+    /**
+     * `minimumSignificantDigits`: The minimum number of significant digits to use. Possible values are from 1 to 21; the default is 1.
+     */
+    // minimumSignificantDigits: {
+    //   type: Number,
+    //   value: minimumSignificantDigits,
+    //   observer: 'reFormat'
+    // }, 
+
+    /**
+     * `maximumSignificantDigits` The maximum number of significant digits to use. Possible values are from 1 to 21; the default is minimumSignificantDigits.
+     */
+    // maximumSignificantDigits: {
+    //   type: Number,
+    //   value: maximumSignificantDigits,
+    //   observer: 'reFormat'
+    // }
+
+  },
+
+  ready: function() {
+    this.supportLocale = !!Number.prototype.toLocaleString;
+    if (this.value || this.value === 0) {
+      this._valueChange(this.value, this.value);
+    }
+  },
+
+  reFormat: function() {
+    if (this.supportLocale) {
+      this.debounce('paper-locale-input-reformat', function() {
+        this._valueChange(this.value, this.value);
+      }, 10);
+    }
+  },
+  /**
+   * `valueChange` to override
+   */
+  _valueChange: function(value) {
+    return value;
+  },
+
+  getFormatedValue: function(num) {
+
+    var format;
+
+    try {
+      format = num.toLocaleString(this.locale, {
+        style: this.formatingStyle,
+        currency: this.currency,
+        currencyDisplay: this.currencyDisplay,
+        preventUseGrouping: this.preventUseGrouping,
+        minimumFractionDigits: this.minimumFractionDigits,
+        maximumFractionDigits: this.maximumFractionDigits,
+        minimumIntegerDigits: this.minimumIntegerDigits
+          // minimumSignificantDigits and minimumSignificantDigitsthis does not work
+          // minimumSignificantDigits:  this.minimumSignificantDigits || minimumSignificantDigits,
+          // maximumSignificantDigits:  this.maximumSignificantDigit || maximumSignificantDigits
+      });
+    } catch (err) {
+      this.errorMessage = err;
+      this.invalid = true;
+      return num;
+    }
+    return format;
+  }
+
+};
 </script>
