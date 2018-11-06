@@ -121,7 +121,7 @@ Polymer.behaviors.PaperLocaleInputBehavior = {
     if (this.supportLocale) {
       this.debounce('paper-locale-input-reformat', function() {
         this._valueChange(this.value, this.value);
-      }, 10);
+      }, 20);
     }
   },
   /**
@@ -153,6 +153,8 @@ Polymer.behaviors.PaperLocaleInputBehavior = {
       this.invalid = true;
       return num;
     }
+    this.errorMessage = null;
+    this.invalid = false;
     return format;
   }
 

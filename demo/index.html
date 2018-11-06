@@ -1,41 +1,50 @@
 <!doctype html>
 <html>
-  <head>
-    <title>money-input demo</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../paper-button/paper-button.html">
+<head>
+  <title>money-input demo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../../paper-button/paper-button.html">
+  <link rel="import" href="../paper-locale-input.html">
+  <link rel="import" href="../paper-locale.html">
+  <style is="custom-style" include="demo-pages-shared-styles">
+  </style>
+</head>
 
-    <link rel="import" href="../paper-locale-input.html">
-    <link rel="import" href="../paper-locale.html">
-
-    <style is="custom-style" include="demo-pages-shared-styles">
-    </style>
-  </head>
-  <body>
-
+<body>
   <div class="vertical-section-container centered">
     <h3>Basic firebase-nest demo</h3>
     <demo-snippet>
-      <template>
-        <template is="dom-bind" id="app">
-          <paper-locale-input id="pli" label="paper-locale-input" locale="[[locale]]" currency="[[currency]]" value="{{value}}" minimum-fraction-digits="[[minimumFractionDigits]]" maximum-fraction-digits="[[maximumFractionDigits]]" minimum-integer-digits="[[minimumIntegerDigits]]"  ></paper-locale-input>
-          <p>the same value with proper locale <paper-locale locale="[[locale]]" currency="{{currency}}" value="[[value]]"></paper-locale></p>          
-          <paper-input always-float-label type="number" label="the same value, without formating" value="{{value}}"></paper-input>
-          <paper-input always-float-label type="number" label="minimumFractionDigits" value="{{minimumFractionDigits}}"></paper-input>
-          <paper-input always-float-label type="number" label="maximumFractionDigits" value="{{maximumFractionDigits}}"></paper-input>
-          <paper-input always-float-label type="number" label="minimumIntegerDigits" value="{{minimumIntegerDigits}}"></paper-input>
-          <paper-button raised on-tap="changeLocale" data-locale="fr-FR">locale: fr-FR</paper-button> 
-          <paper-button raised on-tap="changeLocale" data-locale="en-BD">locale: en-BD</paper-button> 
-          <paper-button raised on-tap="changeCurrency" data-currency="EUR">currency: EUR</paper-button> 
-          <paper-button raised on-tap="changeCurrency" data-currency="BDT">currency: BDT</paper-button> 
-          <!-- <paper-input always-float-label type="number" label="minimumSignificantDigits" value="{{minimumSignificantDigits}}"></paper-input> -->
-          <!-- <paper-input always-float-label type="number" label="maximumSignificantDigits" value="{{maximumSignificantDigits}}"></paper-input> -->
-         </template>
+      <template preserve-content>
+        <dom-bind id="app">
+          <template>
+            <paper-locale-input 
+              id="pli" 
+              label="paper-locale-input" 
+              locale="[[locale]]" 
+              currency="[[currency]]" 
+              value="{{value}}" 
+              minimum-fraction-digits="[[minimumFractionDigits]]" 
+              maximum-fraction-digits="[[maximumFractionDigits]]" 
+              minimum-integer-digits="[[minimumIntegerDigits]]"></paper-locale-input>
+            <p>the same value with proper locale <paper-locale locale="[[locale]]" currency="{{currency}}" value="[[value]]"></paper-locale>
+            </p>
+            <paper-input always-float-label type="number" label="the same value, without formating" value="{{value}}"></paper-input>
+            <paper-input always-float-label type="number" label="minimumFractionDigits" value="{{minimumFractionDigits}}"></paper-input>
+            <paper-input always-float-label type="number" label="maximumFractionDigits" value="{{maximumFractionDigits}}"></paper-input>
+            <paper-input always-float-label type="number" label="minimumIntegerDigits" value="{{minimumIntegerDigits}}"></paper-input>
+            <paper-button raised on-tap="changeLocale" data-locale="fr-FR">locale: fr-FR</paper-button>
+            <paper-button raised on-tap="changeLocale" data-locale="en-BD">locale: en-BD</paper-button>
+            <paper-button raised on-tap="changeCurrency" data-currency="EUR">currency: EUR</paper-button>
+            <paper-button raised on-tap="changeCurrency" data-currency="BDT">currency: BDT</paper-button>
+            <!-- <paper-input always-float-label type="number" label="minimumSignificantDigits" value="{{minimumSignificantDigits}}"></paper-input> -->
+            <!-- <paper-input always-float-label type="number" label="maximumSignificantDigits" value="{{maximumSignificantDigits}}"></paper-input> -->
+          </template>
+        </dom-bind>
       </template>
     </demo-snippet>
   </div>
@@ -53,7 +62,7 @@ window.addEventListener('WebComponentsReady', function() {
     app.set('currency', e.target.dataset.currency);
   }
 
-  app.value= 2012300044;  
+  app.value = 2012300044;
   app.locale = "us-US";
   app.currency = "USD";
   app.minimumFractionDigits = 0;
@@ -62,8 +71,8 @@ window.addEventListener('WebComponentsReady', function() {
   // app.minimumSignificantDigits = 1;
   // app.maximumSignificantDigits = 1;
 
- });
+});
 </script>
+</body>
 
-  </body>
 </html>
