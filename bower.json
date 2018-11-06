@@ -2,7 +2,7 @@
   "name": "paper-locale-input",
   "description": "input component for localized data (e.g. currency)",
   "main": "paper-locale-import.html",
-  "version": "0.7.0",
+  "version": "2.0.0",
   "authors": [
     "christophe geiser"
   ],
